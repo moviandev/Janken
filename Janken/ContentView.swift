@@ -30,14 +30,14 @@ struct Background: View {
     var changeBackground: Bool
     
     var body: some View {
-        changeBackground ?
+        !changeBackground ?
         RadialGradient(stops: [
-            .init(color: Color(red: 0.380, green: 0.140, blue: 0.748), location: 0.3),
-            .init(color: Color(red: 0.654, green: 0, blue: 1), location: 0.3)], center: .top, startRadius: 200, endRadius: 700)
+            .init(color: Color(red: 1, green: 0.879, blue: 0.360), location: 0.3),
+            .init(color: Color(red: 0, green: 0.708, blue: 0), location: 0.3)], center: .top, startRadius: 60, endRadius: 350)
         .ignoresSafeArea() :
         RadialGradient(stops: [
-            .init(color: Color(red: 0.654, green: 0, blue: 1), location: 0.3),
-            .init(color: Color(red: 0.380, green: 0.140, blue: 0.748), location: 0.3)], center: .top, startRadius: 700, endRadius: 200)
+            .init(color: Color(red: 0, green: 0.708, blue: 0), location: 0.3),
+            .init(color: Color(red: 1, green: 0.879, blue: 0.360), location: 0.3)], center: .top, startRadius: 60, endRadius: 350)
         .ignoresSafeArea()
         
     }
