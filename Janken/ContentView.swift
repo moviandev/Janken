@@ -7,20 +7,79 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    @State private var 
-    
-    
-    let moves = ["🪨", "📄", "✂️"]
+struct Title: View {
+    var text: String
     
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        Text(text)
+            .font(.largeTitle.bold())
+            .foregroundStyle(.secondary)
+    }
+}
+
+struct EmojiButton: View {
+    var emoji: String
+    
+    var body: some View {
+        Text(emoji)
+            .font(.system(size: 60))
+    }
+}
+
+struct Background: View {
+    var changeBackground: Bool
+    
+    var body: some View {
+        changeBackground ?
+        RadialGradient(stops: [
+            .init(color: Color(red: 0.380, green: 0.140, blue: 0.748), location: 0.3),
+            .init(color: Color(red: 0.654, green: 0, blue: 1), location: 0.3)], center: .top, startRadius: 200, endRadius: 700)
+        .ignoresSafeArea() :
+        RadialGradient(stops: [
+            .init(color: Color(red: 0.654, green: 0, blue: 1), location: 0.3),
+            .init(color: Color(red: 0.380, green: 0.140, blue: 0.748), location: 0.3)], center: .top, startRadius: 700, endRadius: 200)
+        .ignoresSafeArea()
+        
+    }
+}
+
+struct ContentView: View {
+    @State private var moves = ["🪨", "📄", "✂️"]
+        .shuffled()
+
+    @State private var shouldWin = Bool.random()
+    @State private var appMove = Int.random(in: 0..<3)
+    @State private var score = 0
+    
+    var body: some View {
+        ZStack {
+            Background(changeBackground: shouldWin)
+            
+            VStack(spacing: 30) {
+                Title(text: "Janken Game")
+                
+                HStack(spacing: 50) {
+                    ForEach(0..<3, id: \.self) {number in
+                        Button {
+                            tappedEmoji(number)
+                        } label: {
+                            EmojiButton(emoji: moves[number])
+                        }
+                    }
+                }
+            }
+            .padding()
         }
-        .padding()
+    }
+    
+    func tappedEmoji(_ userChoice: Int) {
+        if shouldWin && appMove == userChoice {
+            score +=  1
+        } else {
+            score -= 1
+        }
+        
+        shouldWin.toggle()
     }
 }
 
